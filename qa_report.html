@@ -1,0 +1,1440 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Genentech DCM Weekly QA — 20260422–20260428</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #f6f7f9; }
+    .navbar-brand img { height: 36px; }
+    code { background: rgba(0,0,0,0.04); padding: 1px 4px; border-radius: 3px; color: #0a48a8; }
+    summary { cursor: pointer; font-weight: 600; color: #0a48a8; }
+    .text-bg-light .text-muted { color: #888 !important; }
+    table.table-sm td, table.table-sm th { font-variant-numeric: tabular-nums; }
+    .navbar { background: linear-gradient(90deg, #0033A0 0%, #2266b3 100%) !important; }
+    .navbar .navbar-brand, .navbar .text-light { color: #fff !important; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-dark mb-4 shadow">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+      <img src="https://cdn.cookielaw.org/logos/d83b6e8f-2787-46e5-b85f-ad52b3a0acb6/0537bd7f-107d-432a-ac1b-fbcea3dc21f8/050921fa-0ef7-449a-9ffb-896450bc98cc/Genentech_Logo.png" alt="Genentech" style="background:white; padding:4px; border-radius:4px;">
+      <span>DCM Weekly QA Report</span>
+    </a>
+    <span class="text-light small">Generated 2026-05-04 21:01:15 UTC · scan time 0.6 min</span>
+  </div>
+</nav>
+
+<div class="container-fluid px-4">
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h1 class="h4 mb-2">Weekly Window: 20260422 → 20260428 (UTC)</h1>
+      <p class="mb-2 text-muted">
+        Comparing <strong>Improvado</strong>
+        (files staged on Genentech DEV SFTP <code>sftp.cmgoasis.dev.gene.com:dcm/weekly_20260422_to_20260428/</code>)
+        against <strong>DCM (oasis prod)</strong>
+        (existing snapshot on Genentech PROD SFTP <code>sftp-cmgoasis.gene.com:dcm_20260429/</code>).
+      </p>
+      <p class="mb-0 small text-muted">
+        Improvado rows are read from local stitched files
+        (<code>E:\Projects\dcm\weekly_20260422_to_20260428\_stitched</code>) which are byte-identical
+        to the Improvado-uploaded files on Genentech DEV SFTP
+        (verified at upload time). DCM (oasis prod) rows are streamed
+        live via SFTP across all part files. For impressions/rich_media the
+        per-column sums are skipped — these tables are event-level so
+        <em>row count is the KPI</em>; per-day breakdowns are still computed.
+        DCM (oasis prod) files have no <code>batch_id</code> column, so
+        the per-day histogram for the count-only tables is inferred from
+        <code>event_time_us</code> (UTC).
+      </p>
+    </div>
+  </div>
+
+  
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-2">
+    <div class="card text-bg-success h-100"><div class="card-body p-3">
+      <div class="small">Match</div><div class="fs-3 fw-bold">25</div></div></div></div>
+  <div class="col-6 col-md-2">
+    <div class="card text-bg-warning h-100"><div class="card-body p-3">
+      <div class="small">Tiny diff</div><div class="fs-3 fw-bold">0</div></div></div></div>
+  <div class="col-6 col-md-2">
+    <div class="card text-bg-danger h-100"><div class="card-body p-3">
+      <div class="small">Mismatch</div><div class="fs-3 fw-bold">1</div></div></div></div>
+  <div class="col-6 col-md-2">
+    <div class="card text-bg-secondary h-100"><div class="card-body p-3">
+      <div class="small">Total tables</div><div class="fs-3 fw-bold">26</div></div></div></div>
+  <div class="col-6 col-md-2">
+    <div class="card text-bg-light h-100"><div class="card-body p-3">
+      <div class="small text-muted">Improvado total size</div>
+      <div class="fs-5 fw-semibold">102.82 GB</div></div></div></div>
+  <div class="col-6 col-md-2">
+    <div class="card text-bg-light h-100"><div class="card-body p-3">
+      <div class="small text-muted">DCM (oasis prod) total size</div>
+      <div class="fs-5 fw-semibold">104.35 GB</div></div></div></div>
+</div>
+
+
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="position-sticky" style="top: 1rem;">
+        <h5 class="mt-4">Fact tables (4)</h5><div class="list-group"><a href="#t-dcm_activity_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_activity_daily_l</code></span><span class="badge bg-danger">MISMATCH</span></a><a href="#t-dcm_clicks_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_clicks_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_impressions_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_impressions_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_rich_media_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_rich_media_daily_l</code></span><span class="badge bg-success">OK</span></a></div>
+        <h5 class="mt-4">Dimension tables (22)</h5><div class="list-group"><a href="#t-dcm_browsers_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_browsers_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_operating_systems_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_operating_systems_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_states_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_states_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_designated_market_areas_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_designated_market_areas_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_custom_floodlight_variables_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_custom_floodlight_variables_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_advertisers_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_advertisers_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_sites_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_sites_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_activity_types_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_activity_types_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_campaigns_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_campaigns_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_cities_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_cities_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_custom_rich_media_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_custom_rich_media_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_activity_categories_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_activity_categories_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_keyword_value_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_keyword_value_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_assets_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_assets_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_ad_placement_assignments_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_ad_placement_assignments_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_custom_creative_fields_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_custom_creative_fields_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_placement_cost_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_placement_cost_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_ads_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_ads_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_landing_page_url_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_landing_page_url_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_placements_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_placements_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_creative_ad_assignments_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_creative_ad_assignments_daily_l</code></span><span class="badge bg-success">OK</span></a><a href="#t-dcm_creatives_daily_l" class="list-group-item d-flex justify-content-between align-items-center"><span><code>dcm_creatives_daily_l</code></span><span class="badge bg-success">OK</span></a></div>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <h2 class="h4 mt-2 mb-3">Fact tables</h2>
+      <div class="card mb-3 shadow-sm" id="t-dcm_activity_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_activity_daily_l</span>
+  <span class="badge bg-secondary">Fact</span>
+  <div class="ms-auto"><span class="badge bg-danger fs-6">MISMATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows · UTC 20260422–20260428</div><div class="fs-6 ">293,869</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows · UTC 20260422–20260428</div><div class="fs-6 ">244,346</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+49,523</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">83.1479%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado file size</div><div class="fs-6 text-muted">74.89 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) file size (parts)</div><div class="fs-6 text-muted">62.08 MB (12)</div></div>
+</div>
+<div class="alert alert-danger py-2 mb-3"><strong>Findings</strong><ul class="mb-0">
+<li>Rows in 20260422–20260428 (UTC) differ: Improvado 293,869 vs DCM (oasis prod) 244,346 (Δ +49,523, +20.2676%)</li>
+<li>Per-day event_time UTC count diverges in-window on: 20260428</li>
+<li>Numeric sums diverge in 21 column(s) (material)</li>
+</ul>
+<div class="mt-2 small"><strong>Likely cause:</strong> For 20260428, DCM (oasis prod) has 6,421 rows vs Improvado 55,944 (delta +49,523). Cause: the DCM (oasis prod) snapshot in <code>dcm_20260429/</code> was <strong>incomplete at generation time</strong> — DCM activity attribution for 20260428 had not yet finished when the reference snapshot was produced (DCM conversion attribution typically lags 24–48 h). The Improvado side was re-stitched later and includes the fully-attributed batch. This is the only divergence in the week.</div>
+</div>
+<div class="mb-3"><div class="text-muted small mb-2 fw-bold">MARKETING KPIs</div><div class="row g-2"><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-danger h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">Total Conversions</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">293,869</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">244,346</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">+20.2676%</span></div>    </div>  </div></div></div><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-danger h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">Total Revenue</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">0.5227</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">0.4526</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">+15.4884%</span></div>    </div>  </div></div></div><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-success h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">DV360 Media Cost (USD)</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">0</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">0</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">0.000%</span></div>    </div>  </div></div></div><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-success h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">DV360 Revenue (USD)</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">0</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">0</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">0.000%</span></div>    </div>  </div></div></div><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-success h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">DV360 Total Media Cost (USD)</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">0</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">0</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">0.000%</span></div>    </div>  </div></div></div><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-success h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">DV360 Billable Cost (USD)</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">0</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">0</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">0.000%</span></div>    </div>  </div></div></div></div></div>
+<details class="mb-3" open><summary>Per-day breakdown by <strong>event_time UTC date</strong></summary>
+<div class="form-text">Each row's date is its <code>event_time_us</code> column converted to UTC. Restricted to 20260422–20260428 UTC (out-of-window rows are excluded per the QA scope).</div>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Date (UTC)</th><th class="text-end">Improvado rows</th><th class="text-end">DCM (oasis prod) rows</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr><td>20260422</td><td class="text-end">46,968</td><td class="text-end">46,968</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260423</td><td class="text-end">55,503</td><td class="text-end">55,503</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260424</td><td class="text-end">45,894</td><td class="text-end">45,894</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260425</td><td class="text-end">19,212</td><td class="text-end">19,212</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260426</td><td class="text-end">19,248</td><td class="text-end">19,248</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260427</td><td class="text-end">51,100</td><td class="text-end">51,100</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260428</td><td class="text-end">55,944</td><td class="text-end">6,421</td><td class="text-end text-danger fw-bold">+49,523</td><td class="text-end">+771.2662%</td></tr>
+<tr class="table-info fw-bold"><td>Total (20260422–20260428 UTC)</td><td class="text-end">293,869</td><td class="text-end">244,346</td><td class="text-end">+49,523</td><td class="text-end">+20.2676%</td></tr>
+</tbody></table></details>
+<details class="mb-2"><summary>Numeric column sums (66 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class="table-danger"><td><code>Activity ID</code></td><td class="text-end">33,146,735,522,913</td><td class="text-end">27,515,384,425,741</td><td class="text-end">5,631,351,097,172</td><td class="text-end">+20.4662%</td></tr>
+<tr class="table-danger"><td><code>Ad ID</code></td><td class="text-end">3,169,937,933,312</td><td class="text-end">2,589,625,389,726</td><td class="text-end">580,312,543,586</td><td class="text-end">+22.4091%</td></tr>
+<tr class="table-danger"><td><code>Advertiser ID</code></td><td class="text-end">3,026,402,116,274</td><td class="text-end">2,512,590,044,674</td><td class="text-end">513,812,071,600</td><td class="text-end">+20.4495%</td></tr>
+<tr class="table-danger"><td><code>Browser/Platform ID</code></td><td class="text-end">10,925,904</td><td class="text-end">8,982,988</td><td class="text-end">1,942,916</td><td class="text-end">+21.6288%</td></tr>
+<tr class="table-danger"><td><code>Browser/Platform Version</code></td><td class="text-end">958</td><td class="text-end">774</td><td class="text-end">184</td><td class="text-end">+23.7726%</td></tr>
+<tr class="table-danger"><td><code>Campaign ID</code></td><td class="text-end">160,607,218,457</td><td class="text-end">131,322,790,847</td><td class="text-end">29,284,427,610</td><td class="text-end">+22.2996%</td></tr>
+<tr class="table-danger"><td><code>Conversion ID</code></td><td class="text-end">5,853</td><td class="text-end">4,777</td><td class="text-end">1,076</td><td class="text-end">+22.5246%</td></tr>
+<tr class="table-danger"><td><code>Creative Version</code></td><td class="text-end">1,732</td><td class="text-end">1,435</td><td class="text-end">297</td><td class="text-end">+20.6969%</td></tr>
+<tr class="table-danger"><td><code>Event Time</code></td><td class="text-end">522,242,954,457,733,050,285</td><td class="text-end">434,220,905,294,636,315,101</td><td class="text-end">88,022,049,163,096,735,184</td><td class="text-end">+20.2713%</td></tr>
+<tr class="table-danger"><td><code>Floodlight Configuration</code></td><td class="text-end">3,026,377,330,608</td><td class="text-end">2,512,572,431,879</td><td class="text-end">513,804,898,729</td><td class="text-end">+20.4494%</td></tr>
+<tr class="table-danger"><td><code>Interaction Time</code></td><td class="text-end">9,670,305,976,889,258,274</td><td class="text-end">7,889,528,484,644,168,380</td><td class="text-end">1,780,777,492,245,089,894</td><td class="text-end">+22.5714%</td></tr>
+<tr class="table-danger"><td><code>Operating System ID</code></td><td class="text-end">127,536,642,427</td><td class="text-end">105,983,018,516</td><td class="text-end">21,553,623,911</td><td class="text-end">+20.3369%</td></tr>
+<tr class="table-danger"><td><code>Placement ID</code></td><td class="text-end">2,124,747,205,112</td><td class="text-end">1,736,898,337,460</td><td class="text-end">387,848,867,652</td><td class="text-end">+22.3300%</td></tr>
+<tr class="table-danger"><td><code>Rendering ID</code></td><td class="text-end">260,220,260,982</td><td class="text-end">220,787,023,899</td><td class="text-end">39,433,237,083</td><td class="text-end">+17.8603%</td></tr>
+<tr class="table-danger"><td><code>Sa360 Ad Group ID</code></td><td class="text-end">659,810,256,909,802</td><td class="text-end">532,297,119,114,924</td><td class="text-end">127,513,137,794,878</td><td class="text-end">+23.9553%</td></tr>
+<tr class="table-danger"><td><code>Sa360 Campaign ID</code></td><td class="text-end">82,867,573,860,856</td><td class="text-end">66,849,900,640,181</td><td class="text-end">16,017,673,220,675</td><td class="text-end">+23.9607%</td></tr>
+<tr class="table-danger"><td><code>Sa360 Keyword ID</code></td><td class="text-end">2,811,265,247,753,032</td><td class="text-end">2,250,243,917,775,402</td><td class="text-end">561,021,329,977,630</td><td class="text-end">+24.9316%</td></tr>
+<tr class="table-danger"><td><code>Segment Value 1</code></td><td class="text-end">360,164,386,454,220</td><td class="text-end">291,021,871,575,067</td><td class="text-end">69,142,514,879,153</td><td class="text-end">+23.7585%</td></tr>
+<tr class="table-danger"><td><code>Site ID (CM360)</code></td><td class="text-end">26,024,015,208</td><td class="text-end">21,274,283,930</td><td class="text-end">4,749,731,278</td><td class="text-end">+22.3262%</td></tr>
+<tr class="table-danger"><td><code>Total Conversions</code></td><td class="text-end">293,869</td><td class="text-end">244,346</td><td class="text-end">49,523</td><td class="text-end">+20.2676%</td></tr>
+<tr class="table-danger"><td><code>Total Revenue</code></td><td class="text-end">0.5227</td><td class="text-end">0.4526</td><td class="text-end">0.0701</td><td class="text-end">+15.4884%</td></tr>
+<tr class=""><td><code>DV360 Billable Cost (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Billable Cost (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Billable Cost (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 1 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 1 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 1 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 2 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 2 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 2 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 3 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 3 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 3 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 4 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 4 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 4 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 5 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 5 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 5 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Data Fees (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Data Fees (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Data Fees (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Cost (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Cost (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Cost (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 1 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 1 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 1 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 2 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 2 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 2 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 3 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 3 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 3 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 4 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 4 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 4 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 5 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 5 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 5 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Revenue (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Revenue (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Revenue (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Total Media Cost (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Total Media Cost (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Total Media Cost (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 113 cols / prod 113 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Event Time</code></td><td><code>Event Time</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>User ID</code></td><td><code>User ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Campaign ID</code></td><td><code>Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Ad ID</code></td><td><code>Ad ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Rendering ID</code></td><td><code>Rendering ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Creative Version</code></td><td><code>Creative Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>Site ID (CM360)</code></td><td><code>Site ID (CM360)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">8</td><td><code>Placement ID</code></td><td><code>Placement ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">9</td><td><code>Country Code</code></td><td><code>Country Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">10</td><td><code>State/Region</code></td><td><code>State/Region</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">11</td><td><code>Browser/Platform ID</code></td><td><code>Browser/Platform ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">12</td><td><code>Browser/Platform Version</code></td><td><code>Browser/Platform Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">13</td><td><code>Operating System ID</code></td><td><code>Operating System ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">14</td><td><code>U Value</code></td><td><code>U Value</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">15</td><td><code>Activity ID</code></td><td><code>Activity ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">16</td><td><code>TRAN Value</code></td><td><code>TRAN Value</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">17</td><td><code>Other Data</code></td><td><code>Other Data</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">18</td><td><code>ORD Value</code></td><td><code>ORD Value</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">19</td><td><code>Interaction Time</code></td><td><code>Interaction Time</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">20</td><td><code>Conversion ID</code></td><td><code>Conversion ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">21</td><td><code>Segment Value 1</code></td><td><code>Segment Value 1</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">22</td><td><code>Floodlight Configuration</code></td><td><code>Floodlight Configuration</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">23</td><td><code>Event Type</code></td><td><code>Event Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">24</td><td><code>Event Sub-Type</code></td><td><code>Event Sub-Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">25</td><td><code>DV360 Auction ID</code></td><td><code>DV360 Auction ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">26</td><td><code>DV360 Request Time</code></td><td><code>DV360 Request Time</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">27</td><td><code>DV360 Advertiser ID</code></td><td><code>DV360 Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">28</td><td><code>DV360 Insertion Order ID</code></td><td><code>DV360 Insertion Order ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">29</td><td><code>DV360 Line Item ID</code></td><td><code>DV360 Line Item ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">30</td><td><code>DV360 Creative ID</code></td><td><code>DV360 Creative ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">31</td><td><code>DV360 Bid Price (USD)</code></td><td><code>DV360 Bid Price (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">32</td><td><code>DV360 Bid Price (Partner Currency)</code></td><td><code>DV360 Bid Price (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">33</td><td><code>DV360 Bid Price (Advertiser Currency)</code></td><td><code>DV360 Bid Price (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">34</td><td><code>DV360 URL</code></td><td><code>DV360 URL</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">35</td><td><code>DV360 Site ID</code></td><td><code>DV360 Site ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">36</td><td><code>DV360 Language</code></td><td><code>DV360 Language</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">37</td><td><code>DV360 Adx Page Categories</code></td><td><code>DV360 Adx Page Categories</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">38</td><td><code>DV360 Matching Targeted Keywords</code></td><td><code>DV360 Matching Targeted Keywords</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">39</td><td><code>DV360 Exchange ID</code></td><td><code>DV360 Exchange ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">40</td><td><code>DV360 Attributed Inventory Source External ID</code></td><td><code>DV360 Attributed Inventory Source External ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">41</td><td><code>DV360 Attributed Inventory Source Is Public</code></td><td><code>DV360 Attributed Inventory Source Is Public</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">42</td><td><code>DV360 Ad Position</code></td><td><code>DV360 Ad Position</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">43</td><td><code>DV360 Country Code</code></td><td><code>DV360 Country Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">44</td><td><code>DV360 Designated Market Area (DMA) ID</code></td><td><code>DV360 Designated Market Area (DMA) ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">45</td><td><code>DV360 ZIP/Postal Code</code></td><td><code>DV360 ZIP/Postal Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">46</td><td><code>DV360 State/Region ID</code></td><td><code>DV360 State/Region ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">47</td><td><code>DV360 City ID</code></td><td><code>DV360 City ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">48</td><td><code>DV360 Operating System ID</code></td><td><code>DV360 Operating System ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">49</td><td><code>DV360 Browser/Platform ID</code></td><td><code>DV360 Browser/Platform ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">50</td><td><code>DV360 Browser Timezone Offset Minutes</code></td><td><code>DV360 Browser Timezone Offset Minutes</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">51</td><td><code>DV360 Net Speed</code></td><td><code>DV360 Net Speed</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">52</td><td><code>DV360 Matching Targeted Segments</code></td><td><code>DV360 Matching Targeted Segments</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">53</td><td><code>DV360 ISP ID</code></td><td><code>DV360 ISP ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">54</td><td><code>DV360 Device Type</code></td><td><code>DV360 Device Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">55</td><td><code>DV360 Mobile Make ID</code></td><td><code>DV360 Mobile Make ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">56</td><td><code>DV360 Mobile Model ID</code></td><td><code>DV360 Mobile Model ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">57</td><td><code>Sa360 Keyword ID</code></td><td><code>Sa360 Keyword ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">58</td><td><code>Sa360 Campaign ID</code></td><td><code>Sa360 Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">59</td><td><code>Sa360 Ad Group ID</code></td><td><code>Sa360 Ad Group ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">60</td><td><code>DV360 Browser/Platform Reportable ID</code></td><td><code>DV360 Browser/Platform Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">61</td><td><code>DV360 Operating System Reportable ID</code></td><td><code>DV360 Operating System Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">62</td><td><code>DV360 Mobile Make Reportable ID</code></td><td><code>DV360 Mobile Make Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">63</td><td><code>DV360 Mobile Model Reportable ID</code></td><td><code>DV360 Mobile Model Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">64</td><td><code>DV360 ISP Reportable ID</code></td><td><code>DV360 ISP Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">65</td><td><code>Total Conversions</code></td><td><code>Total Conversions</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">66</td><td><code>Total Revenue</code></td><td><code>Total Revenue</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">67</td><td><code>DV360 Media Cost (USD)</code></td><td><code>DV360 Media Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">68</td><td><code>DV360 Media Cost (Partner Currency)</code></td><td><code>DV360 Media Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">69</td><td><code>DV360 Media Cost (Advertiser Currency)</code></td><td><code>DV360 Media Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">70</td><td><code>DV360 Revenue (USD)</code></td><td><code>DV360 Revenue (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">71</td><td><code>DV360 Revenue (Partner Currency)</code></td><td><code>DV360 Revenue (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">72</td><td><code>DV360 Revenue (Advertiser Currency)</code></td><td><code>DV360 Revenue (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">73</td><td><code>DV360 Total Media Cost (USD)</code></td><td><code>DV360 Total Media Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">74</td><td><code>DV360 Total Media Cost (Partner Currency)</code></td><td><code>DV360 Total Media Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">75</td><td><code>DV360 Total Media Cost (Advertiser Currency)</code></td><td><code>DV360 Total Media Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">76</td><td><code>DV360 CPM Fee 1 (USD)</code></td><td><code>DV360 CPM Fee 1 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">77</td><td><code>DV360 CPM Fee 1 (Partner Currency)</code></td><td><code>DV360 CPM Fee 1 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">78</td><td><code>DV360 CPM Fee 1 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 1 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">79</td><td><code>DV360 CPM Fee 2 (USD)</code></td><td><code>DV360 CPM Fee 2 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">80</td><td><code>DV360 CPM Fee 2 (Partner Currency)</code></td><td><code>DV360 CPM Fee 2 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">81</td><td><code>DV360 CPM Fee 2 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 2 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">82</td><td><code>DV360 CPM Fee 3 (USD)</code></td><td><code>DV360 CPM Fee 3 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">83</td><td><code>DV360 CPM Fee 3 (Partner Currency)</code></td><td><code>DV360 CPM Fee 3 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">84</td><td><code>DV360 CPM Fee 3 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 3 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">85</td><td><code>DV360 CPM Fee 4 (USD)</code></td><td><code>DV360 CPM Fee 4 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">86</td><td><code>DV360 CPM Fee 4 (Partner Currency)</code></td><td><code>DV360 CPM Fee 4 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">87</td><td><code>DV360 CPM Fee 4 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 4 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">88</td><td><code>DV360 CPM Fee 5 (USD)</code></td><td><code>DV360 CPM Fee 5 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">89</td><td><code>DV360 CPM Fee 5 (Partner Currency)</code></td><td><code>DV360 CPM Fee 5 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">90</td><td><code>DV360 CPM Fee 5 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 5 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">91</td><td><code>DV360 Media Fee 1 (USD)</code></td><td><code>DV360 Media Fee 1 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">92</td><td><code>DV360 Media Fee 1 (Partner Currency)</code></td><td><code>DV360 Media Fee 1 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">93</td><td><code>DV360 Media Fee 1 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 1 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">94</td><td><code>DV360 Media Fee 2 (USD)</code></td><td><code>DV360 Media Fee 2 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">95</td><td><code>DV360 Media Fee 2 (Partner Currency)</code></td><td><code>DV360 Media Fee 2 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">96</td><td><code>DV360 Media Fee 2 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 2 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">97</td><td><code>DV360 Media Fee 3 (USD)</code></td><td><code>DV360 Media Fee 3 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">98</td><td><code>DV360 Media Fee 3 (Partner Currency)</code></td><td><code>DV360 Media Fee 3 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">99</td><td><code>DV360 Media Fee 3 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 3 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">100</td><td><code>DV360 Media Fee 4 (USD)</code></td><td><code>DV360 Media Fee 4 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">101</td><td><code>DV360 Media Fee 4 (Partner Currency)</code></td><td><code>DV360 Media Fee 4 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">102</td><td><code>DV360 Media Fee 4 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 4 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">103</td><td><code>DV360 Media Fee 5 (USD)</code></td><td><code>DV360 Media Fee 5 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">104</td><td><code>DV360 Media Fee 5 (Partner Currency)</code></td><td><code>DV360 Media Fee 5 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">105</td><td><code>DV360 Media Fee 5 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 5 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">106</td><td><code>DV360 Data Fees (USD)</code></td><td><code>DV360 Data Fees (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">107</td><td><code>DV360 Data Fees (Partner Currency)</code></td><td><code>DV360 Data Fees (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">108</td><td><code>DV360 Data Fees (Advertiser Currency)</code></td><td><code>DV360 Data Fees (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">109</td><td><code>DV360 Billable Cost (USD)</code></td><td><code>DV360 Billable Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">110</td><td><code>DV360 Billable Cost (Partner Currency)</code></td><td><code>DV360 Billable Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">111</td><td><code>DV360 Billable Cost (Advertiser Currency)</code></td><td><code>DV360 Billable Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">112</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_clicks_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_clicks_daily_l</span>
+  <span class="badge bg-secondary">Fact</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows · UTC 20260422–20260428</div><div class="fs-6 ">253,680</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows · UTC 20260422–20260428</div><div class="fs-6 ">253,680</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado file size</div><div class="fs-6 text-muted">97.12 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) file size (parts)</div><div class="fs-6 text-muted">98.75 MB (21)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<div class="mb-3"><div class="text-muted small mb-2 fw-bold">MARKETING KPIs</div><div class="row g-2"><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-success h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">DV360 Media Cost (USD)</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">0</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">0</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">0.000%</span></div>    </div>  </div></div></div><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-success h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">DV360 Total Media Cost (USD)</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">0</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">0</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">0.000%</span></div>    </div>  </div></div></div><div class="col-12 col-md-6 col-lg-4">  <div class="card border-2 border-success h-100"><div class="card-body p-3">    <div class="small text-muted text-uppercase fw-bold">DV360 Billable Cost (USD)</div>    <div class="d-flex justify-content-between mt-1">      <div><span class="text-muted small">Improvado</span><br>        <span class="fw-semibold">0</span></div>      <div><span class="text-muted small">DCM (oasis prod)</span><br>        <span class="fw-semibold">0</span></div>      <div class="text-end"><span class="text-muted small">Δ</span><br>        <span class="fw-semibold">0.000%</span></div>    </div>  </div></div></div></div></div>
+<details class="mb-3" open><summary>Per-day breakdown by <strong>event_time UTC date</strong></summary>
+<div class="form-text">Each row's date is its <code>event_time_us</code> column converted to UTC. Restricted to 20260422–20260428 UTC (out-of-window rows are excluded per the QA scope).</div>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Date (UTC)</th><th class="text-end">Improvado rows</th><th class="text-end">DCM (oasis prod) rows</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr><td>20260422</td><td class="text-end">38,045</td><td class="text-end">38,045</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260423</td><td class="text-end">39,167</td><td class="text-end">39,167</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260424</td><td class="text-end">38,557</td><td class="text-end">38,557</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260425</td><td class="text-end">33,616</td><td class="text-end">33,616</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260426</td><td class="text-end">34,029</td><td class="text-end">34,029</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260427</td><td class="text-end">35,243</td><td class="text-end">35,243</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260428</td><td class="text-end">35,023</td><td class="text-end">35,023</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr class="table-info fw-bold"><td>Total (20260422–20260428 UTC)</td><td class="text-end">253,680</td><td class="text-end">253,680</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-2"><summary>Numeric column sums (63 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Ad ID</code></td><td class="text-end">151,585,914,662,157</td><td class="text-end">151,585,914,662,157</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Advertiser ID</code></td><td class="text-end">2,791,948,844,955</td><td class="text-end">2,791,948,844,955</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Browser/Platform ID</code></td><td class="text-end">7,430,749</td><td class="text-end">7,430,749</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Browser/Platform Version</code></td><td class="text-end">2,242</td><td class="text-end">2,242</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Campaign ID</code></td><td class="text-end">8,002,516,405,911</td><td class="text-end">8,002,516,405,911</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>City ID</code></td><td class="text-end">3,180,371,899</td><td class="text-end">3,180,371,899</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Creative Version</code></td><td class="text-end">238,114</td><td class="text-end">238,114</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Billable Cost (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Billable Cost (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Billable Cost (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 1 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 1 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 1 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 2 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 2 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 2 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 3 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 3 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 3 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 4 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 4 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 4 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 5 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 5 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 CPM Fee 5 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Data Fees (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Data Fees (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Data Fees (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Cost (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Cost (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Cost (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 1 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 1 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 1 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 2 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 2 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 2 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 3 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 3 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 3 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 4 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 4 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 4 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 5 (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 5 (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Media Fee 5 (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Revenue (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Revenue (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Revenue (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Total Media Cost (Advertiser Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Total Media Cost (Partner Currency)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>DV360 Total Media Cost (USD)</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Designated Market Area (DMA) ID</code></td><td class="text-end">21,267,197</td><td class="text-end">21,267,197</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Event Time</code></td><td class="text-end">450,818,191,470,619,207,645</td><td class="text-end">450,818,191,470,619,207,645</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Operating System ID</code></td><td class="text-end">115,377,306,561</td><td class="text-end">115,377,306,561</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Placement ID</code></td><td class="text-end">102,711,792,670,024</td><td class="text-end">102,711,792,670,024</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Rendering ID</code></td><td class="text-end">33,781,870,075,783</td><td class="text-end">33,781,870,075,783</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Sa360 Ad Group ID</code></td><td class="text-end">21,264,726,547,921,971</td><td class="text-end">21,264,726,547,921,971</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Sa360 Campaign ID</code></td><td class="text-end">2,658,751,280,634,818</td><td class="text-end">2,658,751,280,634,818</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Sa360 Keyword ID</code></td><td class="text-end">73,507,654,241,317,192</td><td class="text-end">73,507,654,241,317,192</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Segment Value 1</code></td><td class="text-end">3,062,047,182,437,939,376</td><td class="text-end">3,062,047,182,437,939,376</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Site ID (CM360)</code></td><td class="text-end">1,274,357,354,852</td><td class="text-end">1,274,357,354,852</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>ZIP/Postal Code</code></td><td class="text-end">7,472,671,732</td><td class="text-end">7,472,671,732</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 108 cols / prod 108 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Event Time</code></td><td><code>Event Time</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>User ID</code></td><td><code>User ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Campaign ID</code></td><td><code>Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Ad ID</code></td><td><code>Ad ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Rendering ID</code></td><td><code>Rendering ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Creative Version</code></td><td><code>Creative Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>Site ID (CM360)</code></td><td><code>Site ID (CM360)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">8</td><td><code>Placement ID</code></td><td><code>Placement ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">9</td><td><code>Country Code</code></td><td><code>Country Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">10</td><td><code>State/Region</code></td><td><code>State/Region</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">11</td><td><code>Browser/Platform ID</code></td><td><code>Browser/Platform ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">12</td><td><code>Browser/Platform Version</code></td><td><code>Browser/Platform Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">13</td><td><code>Operating System ID</code></td><td><code>Operating System ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">14</td><td><code>Designated Market Area (DMA) ID</code></td><td><code>Designated Market Area (DMA) ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">15</td><td><code>City ID</code></td><td><code>City ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">16</td><td><code>ZIP/Postal Code</code></td><td><code>ZIP/Postal Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">17</td><td><code>U Value</code></td><td><code>U Value</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">18</td><td><code>Segment Value 1</code></td><td><code>Segment Value 1</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">19</td><td><code>Event Type</code></td><td><code>Event Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">20</td><td><code>Event Sub-Type</code></td><td><code>Event Sub-Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">21</td><td><code>DV360 Auction ID</code></td><td><code>DV360 Auction ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">22</td><td><code>DV360 Request Time</code></td><td><code>DV360 Request Time</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">23</td><td><code>DV360 Advertiser ID</code></td><td><code>DV360 Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">24</td><td><code>DV360 Insertion Order ID</code></td><td><code>DV360 Insertion Order ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">25</td><td><code>DV360 Line Item ID</code></td><td><code>DV360 Line Item ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">26</td><td><code>DV360 Creative ID</code></td><td><code>DV360 Creative ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">27</td><td><code>DV360 Bid Price (USD)</code></td><td><code>DV360 Bid Price (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">28</td><td><code>DV360 Bid Price (Partner Currency)</code></td><td><code>DV360 Bid Price (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">29</td><td><code>DV360 Bid Price (Advertiser Currency)</code></td><td><code>DV360 Bid Price (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">30</td><td><code>DV360 URL</code></td><td><code>DV360 URL</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">31</td><td><code>DV360 Site ID</code></td><td><code>DV360 Site ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">32</td><td><code>DV360 Language</code></td><td><code>DV360 Language</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">33</td><td><code>DV360 Adx Page Categories</code></td><td><code>DV360 Adx Page Categories</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">34</td><td><code>DV360 Matching Targeted Keywords</code></td><td><code>DV360 Matching Targeted Keywords</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">35</td><td><code>DV360 Exchange ID</code></td><td><code>DV360 Exchange ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">36</td><td><code>DV360 Attributed Inventory Source External ID</code></td><td><code>DV360 Attributed Inventory Source External ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">37</td><td><code>DV360 Attributed Inventory Source Is Public</code></td><td><code>DV360 Attributed Inventory Source Is Public</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">38</td><td><code>DV360 Ad Position</code></td><td><code>DV360 Ad Position</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">39</td><td><code>DV360 Country Code</code></td><td><code>DV360 Country Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">40</td><td><code>DV360 Designated Market Area (DMA) ID</code></td><td><code>DV360 Designated Market Area (DMA) ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">41</td><td><code>DV360 ZIP/Postal Code</code></td><td><code>DV360 ZIP/Postal Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">42</td><td><code>DV360 State/Region ID</code></td><td><code>DV360 State/Region ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">43</td><td><code>DV360 City ID</code></td><td><code>DV360 City ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">44</td><td><code>DV360 Operating System ID</code></td><td><code>DV360 Operating System ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">45</td><td><code>DV360 Browser/Platform ID</code></td><td><code>DV360 Browser/Platform ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">46</td><td><code>DV360 Browser Timezone Offset Minutes</code></td><td><code>DV360 Browser Timezone Offset Minutes</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">47</td><td><code>DV360 Net Speed</code></td><td><code>DV360 Net Speed</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">48</td><td><code>DV360 Matching Targeted Segments</code></td><td><code>DV360 Matching Targeted Segments</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">49</td><td><code>DV360 ISP ID</code></td><td><code>DV360 ISP ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">50</td><td><code>DV360 Device Type</code></td><td><code>DV360 Device Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">51</td><td><code>DV360 Mobile Make ID</code></td><td><code>DV360 Mobile Make ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">52</td><td><code>DV360 Mobile Model ID</code></td><td><code>DV360 Mobile Model ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">53</td><td><code>Impression ID</code></td><td><code>Impression ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">54</td><td><code>Sa360 Keyword ID</code></td><td><code>Sa360 Keyword ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">55</td><td><code>Sa360 Campaign ID</code></td><td><code>Sa360 Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">56</td><td><code>Sa360 Ad Group ID</code></td><td><code>Sa360 Ad Group ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">57</td><td><code>DV360 Browser/Platform Reportable ID</code></td><td><code>DV360 Browser/Platform Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">58</td><td><code>DV360 Operating System Reportable ID</code></td><td><code>DV360 Operating System Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">59</td><td><code>DV360 Mobile Make Reportable ID</code></td><td><code>DV360 Mobile Make Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">60</td><td><code>DV360 Mobile Model Reportable ID</code></td><td><code>DV360 Mobile Model Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">61</td><td><code>DV360 ISP Reportable ID</code></td><td><code>DV360 ISP Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">62</td><td><code>DV360 Media Cost (USD)</code></td><td><code>DV360 Media Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">63</td><td><code>DV360 Media Cost (Partner Currency)</code></td><td><code>DV360 Media Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">64</td><td><code>DV360 Media Cost (Advertiser Currency)</code></td><td><code>DV360 Media Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">65</td><td><code>DV360 Revenue (USD)</code></td><td><code>DV360 Revenue (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">66</td><td><code>DV360 Revenue (Partner Currency)</code></td><td><code>DV360 Revenue (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">67</td><td><code>DV360 Revenue (Advertiser Currency)</code></td><td><code>DV360 Revenue (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">68</td><td><code>DV360 Total Media Cost (USD)</code></td><td><code>DV360 Total Media Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">69</td><td><code>DV360 Total Media Cost (Partner Currency)</code></td><td><code>DV360 Total Media Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">70</td><td><code>DV360 Total Media Cost (Advertiser Currency)</code></td><td><code>DV360 Total Media Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">71</td><td><code>DV360 CPM Fee 1 (USD)</code></td><td><code>DV360 CPM Fee 1 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">72</td><td><code>DV360 CPM Fee 1 (Partner Currency)</code></td><td><code>DV360 CPM Fee 1 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">73</td><td><code>DV360 CPM Fee 1 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 1 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">74</td><td><code>DV360 CPM Fee 2 (USD)</code></td><td><code>DV360 CPM Fee 2 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">75</td><td><code>DV360 CPM Fee 2 (Partner Currency)</code></td><td><code>DV360 CPM Fee 2 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">76</td><td><code>DV360 CPM Fee 2 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 2 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">77</td><td><code>DV360 CPM Fee 3 (USD)</code></td><td><code>DV360 CPM Fee 3 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">78</td><td><code>DV360 CPM Fee 3 (Partner Currency)</code></td><td><code>DV360 CPM Fee 3 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">79</td><td><code>DV360 CPM Fee 3 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 3 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">80</td><td><code>DV360 CPM Fee 4 (USD)</code></td><td><code>DV360 CPM Fee 4 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">81</td><td><code>DV360 CPM Fee 4 (Partner Currency)</code></td><td><code>DV360 CPM Fee 4 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">82</td><td><code>DV360 CPM Fee 4 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 4 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">83</td><td><code>DV360 CPM Fee 5 (USD)</code></td><td><code>DV360 CPM Fee 5 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">84</td><td><code>DV360 CPM Fee 5 (Partner Currency)</code></td><td><code>DV360 CPM Fee 5 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">85</td><td><code>DV360 CPM Fee 5 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 5 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">86</td><td><code>DV360 Media Fee 1 (USD)</code></td><td><code>DV360 Media Fee 1 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">87</td><td><code>DV360 Media Fee 1 (Partner Currency)</code></td><td><code>DV360 Media Fee 1 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">88</td><td><code>DV360 Media Fee 1 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 1 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">89</td><td><code>DV360 Media Fee 2 (USD)</code></td><td><code>DV360 Media Fee 2 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">90</td><td><code>DV360 Media Fee 2 (Partner Currency)</code></td><td><code>DV360 Media Fee 2 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">91</td><td><code>DV360 Media Fee 2 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 2 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">92</td><td><code>DV360 Media Fee 3 (USD)</code></td><td><code>DV360 Media Fee 3 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">93</td><td><code>DV360 Media Fee 3 (Partner Currency)</code></td><td><code>DV360 Media Fee 3 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">94</td><td><code>DV360 Media Fee 3 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 3 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">95</td><td><code>DV360 Media Fee 4 (USD)</code></td><td><code>DV360 Media Fee 4 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">96</td><td><code>DV360 Media Fee 4 (Partner Currency)</code></td><td><code>DV360 Media Fee 4 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">97</td><td><code>DV360 Media Fee 4 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 4 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">98</td><td><code>DV360 Media Fee 5 (USD)</code></td><td><code>DV360 Media Fee 5 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">99</td><td><code>DV360 Media Fee 5 (Partner Currency)</code></td><td><code>DV360 Media Fee 5 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">100</td><td><code>DV360 Media Fee 5 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 5 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">101</td><td><code>DV360 Data Fees (USD)</code></td><td><code>DV360 Data Fees (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">102</td><td><code>DV360 Data Fees (Partner Currency)</code></td><td><code>DV360 Data Fees (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">103</td><td><code>DV360 Data Fees (Advertiser Currency)</code></td><td><code>DV360 Data Fees (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">104</td><td><code>DV360 Billable Cost (USD)</code></td><td><code>DV360 Billable Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">105</td><td><code>DV360 Billable Cost (Partner Currency)</code></td><td><code>DV360 Billable Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">106</td><td><code>DV360 Billable Cost (Advertiser Currency)</code></td><td><code>DV360 Billable Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">107</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_impressions_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_impressions_daily_l</span>
+  <span class="badge bg-secondary">Fact</span>
+  <span class="badge bg-info text-dark">count-only</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows · UTC 20260422–20260428</div><div class="fs-6 ">172,276,293</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows · UTC 20260422–20260428</div><div class="fs-6 ">172,276,293</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado file size</div><div class="fs-6 text-muted">57.75 GB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) file size (parts)</div><div class="fs-6 text-muted">58.49 GB (140)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-3" open><summary>Per-day breakdown by <strong>event_time UTC date</strong></summary>
+<div class="form-text">Each row's date is its <code>event_time_us</code> column converted to UTC. Restricted to 20260422–20260428 UTC (out-of-window rows are excluded per the QA scope).</div>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Date (UTC)</th><th class="text-end">Improvado rows</th><th class="text-end">DCM (oasis prod) rows</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr><td>20260422</td><td class="text-end">25,341,400</td><td class="text-end">25,341,400</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260423</td><td class="text-end">24,635,594</td><td class="text-end">24,635,594</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260424</td><td class="text-end">24,740,210</td><td class="text-end">24,740,210</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260425</td><td class="text-end">25,477,687</td><td class="text-end">25,477,687</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260426</td><td class="text-end">24,657,169</td><td class="text-end">24,657,169</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260427</td><td class="text-end">24,876,868</td><td class="text-end">24,876,868</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260428</td><td class="text-end">22,547,365</td><td class="text-end">22,547,365</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr class="table-info fw-bold"><td>Total (20260422–20260428 UTC)</td><td class="text-end">172,276,293</td><td class="text-end">172,276,293</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 109 cols / prod 109 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Event Time</code></td><td><code>Event Time</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>User ID</code></td><td><code>User ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Campaign ID</code></td><td><code>Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Ad ID</code></td><td><code>Ad ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Rendering ID</code></td><td><code>Rendering ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Creative Version</code></td><td><code>Creative Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>Site ID (CM360)</code></td><td><code>Site ID (CM360)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">8</td><td><code>Placement ID</code></td><td><code>Placement ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">9</td><td><code>Country Code</code></td><td><code>Country Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">10</td><td><code>State/Region</code></td><td><code>State/Region</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">11</td><td><code>Browser/Platform ID</code></td><td><code>Browser/Platform ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">12</td><td><code>Browser/Platform Version</code></td><td><code>Browser/Platform Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">13</td><td><code>Operating System ID</code></td><td><code>Operating System ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">14</td><td><code>Designated Market Area (DMA) ID</code></td><td><code>Designated Market Area (DMA) ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">15</td><td><code>City ID</code></td><td><code>City ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">16</td><td><code>ZIP/Postal Code</code></td><td><code>ZIP/Postal Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">17</td><td><code>U Value</code></td><td><code>U Value</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">18</td><td><code>Event Type</code></td><td><code>Event Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">19</td><td><code>Event Sub-Type</code></td><td><code>Event Sub-Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">20</td><td><code>DV360 Auction ID</code></td><td><code>DV360 Auction ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">21</td><td><code>DV360 Request Time</code></td><td><code>DV360 Request Time</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">22</td><td><code>DV360 Advertiser ID</code></td><td><code>DV360 Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">23</td><td><code>DV360 Insertion Order ID</code></td><td><code>DV360 Insertion Order ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">24</td><td><code>DV360 Line Item ID</code></td><td><code>DV360 Line Item ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">25</td><td><code>DV360 Creative ID</code></td><td><code>DV360 Creative ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">26</td><td><code>DV360 Bid Price (USD)</code></td><td><code>DV360 Bid Price (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">27</td><td><code>DV360 Bid Price (Partner Currency)</code></td><td><code>DV360 Bid Price (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">28</td><td><code>DV360 Bid Price (Advertiser Currency)</code></td><td><code>DV360 Bid Price (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">29</td><td><code>DV360 URL</code></td><td><code>DV360 URL</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">30</td><td><code>DV360 Site ID</code></td><td><code>DV360 Site ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">31</td><td><code>DV360 Language</code></td><td><code>DV360 Language</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">32</td><td><code>DV360 Adx Page Categories</code></td><td><code>DV360 Adx Page Categories</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">33</td><td><code>DV360 Matching Targeted Keywords</code></td><td><code>DV360 Matching Targeted Keywords</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">34</td><td><code>DV360 Exchange ID</code></td><td><code>DV360 Exchange ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">35</td><td><code>DV360 Attributed Inventory Source External ID</code></td><td><code>DV360 Attributed Inventory Source External ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">36</td><td><code>DV360 Attributed Inventory Source Is Public</code></td><td><code>DV360 Attributed Inventory Source Is Public</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">37</td><td><code>DV360 Ad Position</code></td><td><code>DV360 Ad Position</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">38</td><td><code>DV360 Country Code</code></td><td><code>DV360 Country Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">39</td><td><code>DV360 Designated Market Area (DMA) ID</code></td><td><code>DV360 Designated Market Area (DMA) ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">40</td><td><code>DV360 ZIP/Postal Code</code></td><td><code>DV360 ZIP/Postal Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">41</td><td><code>DV360 State/Region ID</code></td><td><code>DV360 State/Region ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">42</td><td><code>DV360 City ID</code></td><td><code>DV360 City ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">43</td><td><code>DV360 Operating System ID</code></td><td><code>DV360 Operating System ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">44</td><td><code>DV360 Browser/Platform ID</code></td><td><code>DV360 Browser/Platform ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">45</td><td><code>DV360 Browser Timezone Offset Minutes</code></td><td><code>DV360 Browser Timezone Offset Minutes</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">46</td><td><code>DV360 Net Speed</code></td><td><code>DV360 Net Speed</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">47</td><td><code>DV360 Matching Targeted Segments</code></td><td><code>DV360 Matching Targeted Segments</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">48</td><td><code>DV360 ISP ID</code></td><td><code>DV360 ISP ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">49</td><td><code>DV360 Device Type</code></td><td><code>DV360 Device Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">50</td><td><code>DV360 Mobile Make ID</code></td><td><code>DV360 Mobile Make ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">51</td><td><code>DV360 Mobile Model ID</code></td><td><code>DV360 Mobile Model ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">52</td><td><code>DV360 View State</code></td><td><code>DV360 View State</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">53</td><td><code>Impression ID</code></td><td><code>Impression ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">54</td><td><code>Referrer URL</code></td><td><code>Referrer URL</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">55</td><td><code>DV360 Browser/Platform Reportable ID</code></td><td><code>DV360 Browser/Platform Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">56</td><td><code>DV360 Operating System Reportable ID</code></td><td><code>DV360 Operating System Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">57</td><td><code>DV360 Mobile Make Reportable ID</code></td><td><code>DV360 Mobile Make Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">58</td><td><code>DV360 Mobile Model Reportable ID</code></td><td><code>DV360 Mobile Model Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">59</td><td><code>DV360 ISP Reportable ID</code></td><td><code>DV360 ISP Reportable ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">60</td><td><code>DV360 Media Cost (USD)</code></td><td><code>DV360 Media Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">61</td><td><code>DV360 Media Cost (Partner Currency)</code></td><td><code>DV360 Media Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">62</td><td><code>DV360 Media Cost (Advertiser Currency)</code></td><td><code>DV360 Media Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">63</td><td><code>DV360 Revenue (USD)</code></td><td><code>DV360 Revenue (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">64</td><td><code>DV360 Revenue (Partner Currency)</code></td><td><code>DV360 Revenue (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">65</td><td><code>DV360 Revenue (Advertiser Currency)</code></td><td><code>DV360 Revenue (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">66</td><td><code>DV360 Total Media Cost (USD)</code></td><td><code>DV360 Total Media Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">67</td><td><code>DV360 Total Media Cost (Partner Currency)</code></td><td><code>DV360 Total Media Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">68</td><td><code>DV360 Total Media Cost (Advertiser Currency)</code></td><td><code>DV360 Total Media Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">69</td><td><code>DV360 CPM Fee 1 (USD)</code></td><td><code>DV360 CPM Fee 1 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">70</td><td><code>DV360 CPM Fee 1 (Partner Currency)</code></td><td><code>DV360 CPM Fee 1 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">71</td><td><code>DV360 CPM Fee 1 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 1 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">72</td><td><code>DV360 CPM Fee 2 (USD)</code></td><td><code>DV360 CPM Fee 2 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">73</td><td><code>DV360 CPM Fee 2 (Partner Currency)</code></td><td><code>DV360 CPM Fee 2 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">74</td><td><code>DV360 CPM Fee 2 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 2 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">75</td><td><code>DV360 CPM Fee 3 (USD)</code></td><td><code>DV360 CPM Fee 3 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">76</td><td><code>DV360 CPM Fee 3 (Partner Currency)</code></td><td><code>DV360 CPM Fee 3 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">77</td><td><code>DV360 CPM Fee 3 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 3 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">78</td><td><code>DV360 CPM Fee 4 (USD)</code></td><td><code>DV360 CPM Fee 4 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">79</td><td><code>DV360 CPM Fee 4 (Partner Currency)</code></td><td><code>DV360 CPM Fee 4 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">80</td><td><code>DV360 CPM Fee 4 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 4 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">81</td><td><code>DV360 CPM Fee 5 (USD)</code></td><td><code>DV360 CPM Fee 5 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">82</td><td><code>DV360 CPM Fee 5 (Partner Currency)</code></td><td><code>DV360 CPM Fee 5 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">83</td><td><code>DV360 CPM Fee 5 (Advertiser Currency)</code></td><td><code>DV360 CPM Fee 5 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">84</td><td><code>DV360 Media Fee 1 (USD)</code></td><td><code>DV360 Media Fee 1 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">85</td><td><code>DV360 Media Fee 1 (Partner Currency)</code></td><td><code>DV360 Media Fee 1 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">86</td><td><code>DV360 Media Fee 1 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 1 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">87</td><td><code>DV360 Media Fee 2 (USD)</code></td><td><code>DV360 Media Fee 2 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">88</td><td><code>DV360 Media Fee 2 (Partner Currency)</code></td><td><code>DV360 Media Fee 2 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">89</td><td><code>DV360 Media Fee 2 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 2 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">90</td><td><code>DV360 Media Fee 3 (USD)</code></td><td><code>DV360 Media Fee 3 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">91</td><td><code>DV360 Media Fee 3 (Partner Currency)</code></td><td><code>DV360 Media Fee 3 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">92</td><td><code>DV360 Media Fee 3 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 3 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">93</td><td><code>DV360 Media Fee 4 (USD)</code></td><td><code>DV360 Media Fee 4 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">94</td><td><code>DV360 Media Fee 4 (Partner Currency)</code></td><td><code>DV360 Media Fee 4 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">95</td><td><code>DV360 Media Fee 4 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 4 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">96</td><td><code>DV360 Media Fee 5 (USD)</code></td><td><code>DV360 Media Fee 5 (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">97</td><td><code>DV360 Media Fee 5 (Partner Currency)</code></td><td><code>DV360 Media Fee 5 (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">98</td><td><code>DV360 Media Fee 5 (Advertiser Currency)</code></td><td><code>DV360 Media Fee 5 (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">99</td><td><code>DV360 Data Fees (USD)</code></td><td><code>DV360 Data Fees (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">100</td><td><code>DV360 Data Fees (Partner Currency)</code></td><td><code>DV360 Data Fees (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">101</td><td><code>DV360 Data Fees (Advertiser Currency)</code></td><td><code>DV360 Data Fees (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">102</td><td><code>DV360 Billable Cost (USD)</code></td><td><code>DV360 Billable Cost (USD)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">103</td><td><code>DV360 Billable Cost (Partner Currency)</code></td><td><code>DV360 Billable Cost (Partner Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">104</td><td><code>DV360 Billable Cost (Advertiser Currency)</code></td><td><code>DV360 Billable Cost (Advertiser Currency)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">105</td><td><code>Active View: Eligible Impressions</code></td><td><code>Active View: Eligible Impressions</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">106</td><td><code>Active View: Measurable Impressions</code></td><td><code>Active View: Measurable Impressions</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">107</td><td><code>Active View: Viewable Impressions</code></td><td><code>Active View: Viewable Impressions</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">108</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_rich_media_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_rich_media_daily_l</span>
+  <span class="badge bg-secondary">Fact</span>
+  <span class="badge bg-info text-dark">count-only</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows · UTC 20260422–20260428</div><div class="fs-6 ">316,124,699</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows · UTC 20260422–20260428</div><div class="fs-6 ">316,124,699</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado file size</div><div class="fs-6 text-muted">44.78 GB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) file size (parts)</div><div class="fs-6 text-muted">45.58 GB (140)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-3" open><summary>Per-day breakdown by <strong>event_time UTC date</strong></summary>
+<div class="form-text">Each row's date is its <code>event_time_us</code> column converted to UTC. Restricted to 20260422–20260428 UTC (out-of-window rows are excluded per the QA scope).</div>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Date (UTC)</th><th class="text-end">Improvado rows</th><th class="text-end">DCM (oasis prod) rows</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr><td>20260422</td><td class="text-end">45,240,303</td><td class="text-end">45,240,303</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260423</td><td class="text-end">42,709,432</td><td class="text-end">42,709,432</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260424</td><td class="text-end">43,240,215</td><td class="text-end">43,240,215</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260425</td><td class="text-end">46,650,324</td><td class="text-end">46,650,324</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260426</td><td class="text-end">42,902,749</td><td class="text-end">42,902,749</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260427</td><td class="text-end">51,178,893</td><td class="text-end">51,178,893</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr><td>20260428</td><td class="text-end">44,202,783</td><td class="text-end">44,202,783</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+<tr class="table-info fw-bold"><td>Total (20260422–20260428 UTC)</td><td class="text-end">316,124,699</td><td class="text-end">316,124,699</td><td class="text-end">+0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 20 cols / prod 20 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Event Time</code></td><td><code>Event Time</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>User ID</code></td><td><code>User ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Campaign ID</code></td><td><code>Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Ad ID</code></td><td><code>Ad ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Rendering ID</code></td><td><code>Rendering ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Creative Version</code></td><td><code>Creative Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>Site ID (CM360)</code></td><td><code>Site ID (CM360)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">8</td><td><code>Placement ID</code></td><td><code>Placement ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">9</td><td><code>Country Code</code></td><td><code>Country Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">10</td><td><code>State/Region</code></td><td><code>State/Region</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">11</td><td><code>Browser/Platform ID</code></td><td><code>Browser/Platform ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">12</td><td><code>Browser/Platform Version</code></td><td><code>Browser/Platform Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">13</td><td><code>Operating System ID</code></td><td><code>Operating System ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">14</td><td><code>Rich Media Event ID</code></td><td><code>Rich Media Event ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">15</td><td><code>Rich Media Event Type ID</code></td><td><code>Rich Media Event Type ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">16</td><td><code>Impression ID</code></td><td><code>Impression ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">17</td><td><code>Event Timers</code></td><td><code>Event Timers</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">18</td><td><code>Event Counters</code></td><td><code>Event Counters</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">19</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+      <h2 class="h4 mt-4 mb-3">Dimension tables</h2>
+      <div class="card mb-3 shadow-sm" id="t-dcm_browsers_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_browsers_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">15</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">15</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">415 B</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">463 B (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (1 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Browser/Platform ID</code></td><td class="text-end">516</td><td class="text-end">516</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 3 cols / prod 3 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Browser/Platform ID</code></td><td><code>Browser/Platform ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Browser/Platform</code></td><td><code>Browser/Platform</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_operating_systems_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_operating_systems_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">44</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">44</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">1.3 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">1.4 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (1 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Operating System ID</code></td><td class="text-end">20,150,936</td><td class="text-end">20,150,936</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 3 cols / prod 3 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Operating System ID</code></td><td><code>Operating System ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Operating System</code></td><td><code>Operating System</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_states_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_states_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">63</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">63</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">1.7 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">1.7 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 3 cols / prod 3 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>State/Region</code></td><td><code>State/Region</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>State/Region Full Name</code></td><td><code>State/Region Full Name</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_designated_market_areas_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_designated_market_areas_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">210</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">210</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">7.0 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">7.2 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (1 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Designated Market Area (DMA) ID</code></td><td class="text-end">22,365</td><td class="text-end">22,365</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 3 cols / prod 3 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Designated Market Area (DMA) ID</code></td><td><code>Designated Market Area (DMA) ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Designated Market Area (DMA)</code></td><td><code>Designated Market Area (DMA)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_custom_floodlight_variables_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_custom_floodlight_variables_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">579</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">579</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">15.9 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">15.7 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (1 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Floodlight Configuration</code></td><td class="text-end">6,703,395,117</td><td class="text-end">6,703,395,117</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 4 cols / prod 4 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Floodlight Configuration</code></td><td><code>Floodlight Configuration</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Floodlight Variable Id</code></td><td><code>Floodlight Variable Id</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Floodlight Variable Name</code></td><td><code>Floodlight Variable Name</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_advertisers_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_advertisers_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">306</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">306</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">23.5 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">23.9 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (3 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Advertiser Group ID</code></td><td class="text-end">246,605,972</td><td class="text-end">246,605,972</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Advertiser ID</code></td><td class="text-end">3,375,105,975</td><td class="text-end">3,375,105,975</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Floodlight Configuration</code></td><td class="text-end">3,295,715,040</td><td class="text-end">3,295,715,040</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 6 cols / prod 6 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Floodlight Configuration</code></td><td><code>Floodlight Configuration</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Advertiser</code></td><td><code>Advertiser</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Advertiser Group ID</code></td><td><code>Advertiser Group ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Advertiser Group</code></td><td><code>Advertiser Group</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_sites_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_sites_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">402</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">402</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">25.1 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">25.8 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (2 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Site ID (CM360)</code></td><td class="text-end">2,582,225,199</td><td class="text-end">2,582,225,199</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Site ID (Site Directory)</code></td><td class="text-end">856,024,904</td><td class="text-end">856,024,904</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 5 cols / prod 5 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Site ID (CM360)</code></td><td><code>Site ID (CM360)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Site (CM360)</code></td><td><code>Site (CM360)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Site ID (Site Directory)</code></td><td><code>Site ID (Site Directory)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Site (Site Directory)</code></td><td><code>Site (Site Directory)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_activity_types_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_activity_types_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">714</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">714</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">40.8 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">40.8 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (2 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Activity Group ID</code></td><td class="text-end">6,319,772,103</td><td class="text-end">6,319,772,103</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Floodlight Configuration</code></td><td class="text-end">8,215,385,757</td><td class="text-end">8,215,385,757</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 5 cols / prod 5 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Floodlight Configuration</code></td><td><code>Floodlight Configuration</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Activity Group ID</code></td><td><code>Activity Group ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Activity Type</code></td><td><code>Activity Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Activity Group</code></td><td><code>Activity Group</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_campaigns_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_campaigns_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">2,406</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">2,406</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">215.3 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">217.8 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (4 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Advertiser ID</code></td><td class="text-end">26,429,753,240</td><td class="text-end">26,429,753,240</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Campaign End Date</code></td><td class="text-end">48,647,488,239</td><td class="text-end">48,647,488,239</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Campaign ID</code></td><td class="text-end">70,833,749,270</td><td class="text-end">70,833,749,270</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Campaign Start Date</code></td><td class="text-end">48,629,406,853</td><td class="text-end">48,629,406,853</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 7 cols / prod 7 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Campaign ID</code></td><td><code>Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Campaign</code></td><td><code>Campaign</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Campaign Start Date</code></td><td><code>Campaign Start Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Campaign End Date</code></td><td><code>Campaign End Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Billing Invoice Code</code></td><td><code>Billing Invoice Code</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_cities_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_cities_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">25,985</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">25,985</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">661.2 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">645.6 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (1 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>City ID</code></td><td class="text-end">438,917,030</td><td class="text-end">438,917,030</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 3 cols / prod 3 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>City ID</code></td><td><code>City ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>City</code></td><td><code>City</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_custom_rich_media_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_custom_rich_media_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">14,924</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">14,924</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">715.0 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">718.8 KB (70)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (3 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Advertiser ID</code></td><td class="text-end">145,350,729,048</td><td class="text-end">145,350,729,048</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Rich Media Event ID</code></td><td class="text-end">114,948,661,387</td><td class="text-end">114,948,661,387</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Rich Media Event Type ID</code></td><td class="text-end">30,891</td><td class="text-end">30,891</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 6 cols / prod 6 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Rich Media Event ID</code></td><td><code>Rich Media Event ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Rich Media Event</code></td><td><code>Rich Media Event</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Rich Media Event Type ID</code></td><td><code>Rich Media Event Type ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Rich Media Event Type</code></td><td><code>Rich Media Event Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_activity_categories_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_activity_categories_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">7,459</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">7,459</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">773.1 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">780.4 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (4 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Activity Group ID</code></td><td class="text-end">63,413,149,746</td><td class="text-end">63,413,149,746</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Activity ID</code></td><td class="text-end">381,303,392,994</td><td class="text-end">381,303,392,994</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Floodlight Configuration</code></td><td class="text-end">83,220,331,972</td><td class="text-end">83,220,331,972</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Tag Counting Method ID</code></td><td class="text-end">15,735</td><td class="text-end">15,735</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 8 cols / prod 8 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Floodlight Configuration</code></td><td><code>Floodlight Configuration</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Activity Group ID</code></td><td><code>Activity Group ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Activity Type</code></td><td><code>Activity Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Activity ID</code></td><td><code>Activity ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Activity Sub-Type</code></td><td><code>Activity Sub-Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Activity</code></td><td><code>Activity</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Tag Counting Method ID</code></td><td><code>Tag Counting Method ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_keyword_value_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_keyword_value_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">43,105</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">43,105</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">905.2 KB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">862.1 KB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (1 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Ad ID</code></td><td class="text-end">23,389,735,345,927</td><td class="text-end">23,389,735,345,927</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 3 cols / prod 3 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Ad ID</code></td><td><code>Ad ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Keyword</code></td><td><code>Keyword</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_assets_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_assets_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">17,272</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">17,272</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">1.13 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">1.14 MB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (2 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Asset Category</code></td><td class="text-end">55,334</td><td class="text-end">55,334</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Asset ID</code></td><td class="text-end">12,990,626,438,195</td><td class="text-end">12,990,626,438,195</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 5 cols / prod 5 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Asset</code></td><td><code>Asset</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Asset ID</code></td><td><code>Asset ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Asset Category</code></td><td><code>Asset Category</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Asset Orientation</code></td><td><code>Asset Orientation</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_ad_placement_assignments_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_ad_placement_assignments_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">161,045</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">161,045</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">4.83 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">4.68 MB (3)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (1 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Ad ID</code></td><td class="text-end">86,253,208,138,442</td><td class="text-end">86,253,208,138,442</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 3 cols / prod 3 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Ad ID</code></td><td><code>Ad ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Placement ID</code></td><td><code>Placement ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_custom_creative_fields_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_custom_creative_fields_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">189,676</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">189,676</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">5.95 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">5.76 MB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (2 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Advertiser ID</code></td><td class="text-end">1,874,285,660,310</td><td class="text-end">1,874,285,660,310</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Creative ID</code></td><td class="text-end">37,214,997,827,711</td><td class="text-end">37,214,997,827,711</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 6 cols / prod 6 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Creative ID</code></td><td><code>Creative ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Creative Field Number</code></td><td><code>Creative Field Number</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Creative Field Name</code></td><td><code>Creative Field Name</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Creative Field Value</code></td><td><code>Creative Field Value</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_placement_cost_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_placement_cost_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">158,060</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">158,060</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">6.76 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">6.62 MB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (5 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Placement End Date</code></td><td class="text-end">1,915,942,190,875</td><td class="text-end">1,915,942,190,875</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Placement ID</code></td><td class="text-end">49,341,685,056,874</td><td class="text-end">49,341,685,056,874</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Placement Rate</code></td><td class="text-end">963,685,819,591,908,608</td><td class="text-end">963,685,819,591,908,608</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Placement Start Date</code></td><td class="text-end">1,915,886,140,275</td><td class="text-end">1,915,886,140,275</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Placement Total Booked Units</code></td><td class="text-end">13,500,990,260</td><td class="text-end">13,500,990,260</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 7 cols / prod 7 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Placement ID</code></td><td><code>Placement ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Placement Start Date</code></td><td><code>Placement Start Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Placement End Date</code></td><td><code>Placement End Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Placement Total Booked Units</code></td><td><code>Placement Total Booked Units</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Placement Rate</code></td><td><code>Placement Rate</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Placement Comments</code></td><td><code>Placement Comments</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_ads_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_ads_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">43,105</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">43,105</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">7.92 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">8.03 MB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (3 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Ad ID</code></td><td class="text-end">23,389,735,345,927</td><td class="text-end">23,389,735,345,927</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Advertiser ID</code></td><td class="text-end">427,145,957,627</td><td class="text-end">427,145,957,627</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Campaign ID</code></td><td class="text-end">1,232,827,383,019</td><td class="text-end">1,232,827,383,019</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 9 cols / prod 9 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Campaign ID</code></td><td><code>Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Ad ID</code></td><td><code>Ad ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Ad</code></td><td><code>Ad</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Ad Click URL</code></td><td><code>Ad Click URL</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Ad Type</code></td><td><code>Ad Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Creative Pixel Size</code></td><td><code>Creative Pixel Size</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>Ad Comments</code></td><td><code>Ad Comments</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">8</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_landing_page_url_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_landing_page_url_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">70,268</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">70,268</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">10.46 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">10.53 MB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (1 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Landing Page URL ID</code></td><td class="text-end">50,727,289,478,725</td><td class="text-end">50,727,289,478,725</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 3 cols / prod 3 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Landing Page URL ID</code></td><td><code>Landing Page URL ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Landing Page URL</code></td><td><code>Landing Page URL</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_placements_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_placements_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">95,685</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">95,685</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">20.92 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">21.21 MB (3)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (7 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Activity ID</code></td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Campaign ID</code></td><td class="text-end">2,641,385,264,069</td><td class="text-end">2,641,385,264,069</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Package/Roadblock ID</code></td><td class="text-end">21,003,150,848,914</td><td class="text-end">21,003,150,848,914</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Placement End Date</code></td><td class="text-end">655,716,297,964</td><td class="text-end">655,716,297,964</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Placement ID</code></td><td class="text-end">31,933,699,986,908</td><td class="text-end">31,933,699,986,908</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Placement Start Date</code></td><td class="text-end">655,628,866,109</td><td class="text-end">655,628,866,109</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Site ID (CM360)</code></td><td class="text-end">512,456,353,772</td><td class="text-end">512,456,353,772</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 16 cols / prod 16 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Campaign ID</code></td><td><code>Campaign ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Site ID (CM360)</code></td><td><code>Site ID (CM360)</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Placement ID</code></td><td><code>Placement ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Site Keyname</code></td><td><code>Site Keyname</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Placement</code></td><td><code>Placement</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Content Category</code></td><td><code>Content Category</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Placement Strategy</code></td><td><code>Placement Strategy</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>Placement Start Date</code></td><td><code>Placement Start Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">8</td><td><code>Placement End Date</code></td><td><code>Placement End Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">9</td><td><code>Placement Group Type</code></td><td><code>Placement Group Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">10</td><td><code>Package/Roadblock ID</code></td><td><code>Package/Roadblock ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">11</td><td><code>Placement Cost Structure</code></td><td><code>Placement Cost Structure</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">12</td><td><code>Placement Cap Cost Option</code></td><td><code>Placement Cap Cost Option</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">13</td><td><code>Activity ID</code></td><td><code>Activity ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">14</td><td><code>Flighting Activated</code></td><td><code>Flighting Activated</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">15</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_creative_ad_assignments_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_creative_ad_assignments_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">162,039</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">162,039</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">21.25 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">21.23 MB (2)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (4 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Ad ID</code></td><td class="text-end">90,431,868,068,489</td><td class="text-end">90,431,868,068,489</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Creative End Date</code></td><td class="text-end">276,609,191,692,465,696</td><td class="text-end">276,609,191,692,465,696</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Creative ID</code></td><td class="text-end">31,144,085,446,529</td><td class="text-end">31,144,085,446,529</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Creative Start Date</code></td><td class="text-end">273,148,061,333,035,360</td><td class="text-end">273,148,061,333,035,360</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 9 cols / prod 9 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Ad ID</code></td><td><code>Ad ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Creative ID</code></td><td><code>Creative ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Creative Start Date</code></td><td><code>Creative Start Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Creative End Date</code></td><td><code>Creative End Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Creative Rotation Type</code></td><td><code>Creative Rotation Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Creative Groups 1</code></td><td><code>Creative Groups 1</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Creative Groups 2</code></td><td><code>Creative Groups 2</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>Ad Click URL</code></td><td><code>Ad Click URL</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">8</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+<div class="card mb-3 shadow-sm" id="t-dcm_creatives_daily_l">
+<div class="card-header d-flex flex-wrap align-items-center gap-2">
+  <span class="fw-bold">dcm_creatives_daily_l</span>
+  <span class="badge bg-secondary">Dimension</span>
+  <div class="ms-auto"><span class="badge bg-success fs-6">MATCH</span></div>
+</div>
+<div class="card-body">
+<div class="row g-3 mb-3">
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado rows</div><div class="fs-6 ">189,775</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) rows</div><div class="fs-6 ">189,775</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Δ rows</div><div class="fs-6 ">+0</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Match %</div><div class="fs-6 ">100.0000%</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">Improvado size</div><div class="fs-6 text-muted">41.10 MB</div></div>
+<div class="col-6 col-md-2"><div class="small text-muted">DCM (oasis prod) size (parts)</div><div class="fs-6 text-muted">41.44 MB (3)</div></div>
+</div>
+<div class="alert alert-success py-2 mb-3">Row counts, headers, batch_id distribution and numeric sums all consistent.</div>
+<details class="mb-2"><summary>Numeric column sums (3 columns)</summary>
+<table class="table table-sm table-striped mt-2 mb-0"><thead><tr><th>Column</th><th class="text-end">Improvado sum</th><th class="text-end">DCM (oasis prod) sum</th><th class="text-end">Δ</th><th class="text-end">%</th></tr></thead><tbody>
+<tr class=""><td><code>Creative Last Modified Date</code></td><td class="text-end">320,833,850,695,751,744</td><td class="text-end">320,833,850,695,751,744</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Creative Version</code></td><td class="text-end">342,665</td><td class="text-end">342,665</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+<tr class=""><td><code>Rendering ID</code></td><td class="text-end">204,624,805,581,978</td><td class="text-end">204,624,805,581,978</td><td class="text-end">0</td><td class="text-end">0.000%</td></tr>
+</tbody></table></details>
+<details class="mb-3" ><summary>Headers — IDENTICAL (dev 10 cols / prod 10 cols)</summary>
+<table class="table table-sm table-bordered mt-2 mb-0"><thead><tr><th class="text-end" style="width:4em">#</th><th>Improvado</th><th>DCM (oasis prod)</th><th style="width:6em">Same?</th></tr></thead><tbody>
+<tr class=""><td class="text-end">0</td><td><code>Advertiser ID</code></td><td><code>Advertiser ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">1</td><td><code>Rendering ID</code></td><td><code>Rendering ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">2</td><td><code>Creative ID</code></td><td><code>Creative ID</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">3</td><td><code>Creative</code></td><td><code>Creative</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">4</td><td><code>Creative Last Modified Date</code></td><td><code>Creative Last Modified Date</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">5</td><td><code>Creative Type</code></td><td><code>Creative Type</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">6</td><td><code>Creative Pixel Size</code></td><td><code>Creative Pixel Size</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">7</td><td><code>Creative Image URL</code></td><td><code>Creative Image URL</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">8</td><td><code>Creative Version</code></td><td><code>Creative Version</code></td><td><span class="text-success">✓</span></td></tr>
+<tr class=""><td class="text-end">9</td><td><code>batch_id</code></td><td><code>batch_id</code></td><td><span class="text-success">✓</span></td></tr>
+</tbody></table>
+</details>
+</div></div>
+    </div>
+  </div>
+
+  <footer class="my-5 text-muted small">
+    <hr>
+    <p class="mb-1"><strong>Method.</strong>
+      Tables are matched by name (Improvado <code>{name}.csv</code>
+      ↔ DCM (oasis prod) <code>{name}/</code>).
+      For each table the row count, batch_id histogram and numeric column sums are
+      computed independently on each side and compared. The Improvado side
+      reads local stitched files (verified byte-equal to the Genentech DEV SFTP
+      copy); the DCM (oasis prod) side streams Genentech PROD SFTP via paramiko
+      with prefetch. Tolerance for "tiny diff" on numeric sums:
+      Δ ≤ 0.10% relative or 0.01 absolute.</p>
+    <p class="mb-0">Logo: Genentech (used for identification of the data source). Report generated by
+      <code>qa_dev_vs_prod.py</code>.</p>
+  </footer>
+</div>
+</body>
+</html>
