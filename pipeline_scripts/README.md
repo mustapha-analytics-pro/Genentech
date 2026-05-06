@@ -1,64 +1,24 @@
-# Genentech DCM Pipeline — Reference Scripts
+# pipeline_scripts/
 
-Reference Python scripts used for the manual weekly Genentech DCM (CM360) data delivery to Genentech's prod SFTP. Used as the basis for the automated pipeline.
+Reference Python scripts that power the manual weekly Genentech DCM (CM360)
+delivery. Fork these into the production pipeline.
 
-## Scripts
+See the top-level [`README.md`](../README.md) for the end-to-end flow.
 
 | File | Purpose |
 |------|---------|
-| `stitch_apr28.py` | Stitches DCM Data Transfer hourly `.csv.gz` files into one CSV per table. Filters by filename pattern. Appends synthetic `batch_id` column. |
-| `merge_weekly.py` | Trims a stitched weekly file to a strict UTC window `[Mon 00:00 UTC, next Mon 00:00 UTC)` based on `event_time_us`. Disk-tight strategy for huge files (gzip temp → swap). |
-| `sftp_upload_weekly.py` | Mirrors a local stitched directory to Genentech SFTP. Supports `--env dev|prod`. Idempotent: skips files whose remote size already matches local. |
-| `qa_dev_vs_prod.py` | QA report builder. Compares local stitched (Improvado side) vs prod SFTP reference. Bootstrap HTML output with per-day UTC breakdown, batch_id histogram, numeric column sums, header check. |
-| `build_3way_full.py` | 3-way QA report: Improvado / DCM (oasis prod) / Discovery API. Adds Discovery API column from `im_300072_116.creative_advanced_300072_google_cm`. |
+| `stitch_weekly.py` | Stitches DCM Data Transfer hourly/daily `.csv.gz` files into one CSV per table. Filters by filename pattern. Appends synthetic `batch_id` column. Re-delivery aware (latest delivery per `(table, hour)` wins). |
+| `merge_weekly.py` | Trims a stitched fact-table CSV to a strict UTC window `[Mon 00:00, next Mon 00:00)` based on `event_time_us`. Disk-tight strategy for huge files. |
+| `qa_weekly.py` | Validates stitched files vs Improvado's Discovery API (`im_300072_116.creative_advanced_300072_google_cm`). Renders Bootstrap HTML QA report. Returns non-zero on failure → pipeline aborts the prod-SFTP upload. |
+| `sftp_upload_weekly.py` | Mirrors a local stitched directory to Genentech SFTP. `--env dev` or `--env prod`. Idempotent: skips files whose remote size already matches local. |
 
-## 26 tables in scope
-
-```
-dcm_activity_categories_daily_l       (dim)
-dcm_activity_daily_l                  (fact)
-dcm_activity_types_daily_l            (dim)
-dcm_ad_placement_assignments_daily_l  (dim)
-dcm_ads_daily_l                       (dim)
-dcm_advertisers_daily_l               (dim)
-dcm_assets_daily_l                    (dim)
-dcm_browsers_daily_l                  (dim)
-dcm_campaigns_daily_l                 (dim)
-dcm_cities_daily_l                    (dim)
-dcm_clicks_daily_l                    (fact)
-dcm_creative_ad_assignments_daily_l   (dim)
-dcm_creatives_daily_l                 (dim)
-dcm_custom_creative_fields_daily_l    (dim)
-dcm_custom_floodlight_variables_daily_l (dim)
-dcm_custom_rich_media_daily_l         (dim)
-dcm_designated_market_areas_daily_l   (dim)
-dcm_impressions_daily_l               (fact)
-dcm_keyword_value_daily_l             (dim)
-dcm_landing_page_url_daily_l          (dim)
-dcm_operating_systems_daily_l         (dim)
-dcm_placement_cost_daily_l            (dim)
-dcm_placements_daily_l                (dim)
-dcm_rich_media_daily_l                (fact)
-dcm_sites_daily_l                     (dim)
-dcm_states_daily_l                    (dim)
-```
-
-## DCM Data Transfer file naming pattern
+## DCM Data Transfer file naming conventions
 
 ```
-dcm_account848755_<table>_<YYYYMMDDHH>_<dl_yyyymmdd>_<dl_hhmmss>_<file_id>.csv.gz   ← hourly (fact)
-dcm_account848755_<table>_<start_yyyymmdd>_<end_yyyymmdd>_*.csv.gz                  ← daily (dim)
+dcm_account848755_<table>_<YYYYMMDDHH>_<dl_yyyymmdd>_<dl_hhmmss>_<file_id>.csv.gz   ← hourly (fact tables)
+dcm_account848755_<table>_<start_yyyymmdd>_<end_yyyymmdd>_*.csv.gz                  ← daily (dim tables)
 ```
 
-When picking files for a UTC week, pick the **most recent** delivery (`<dl_yyyymmdd>_<dl_hhmmss>` lexicographically max) per `(table, hour)` because Google re-delivers late events.
-
-## SFTP endpoints
-
-- **Dev**: `sftp.cmgoasis.dev.gene.com` user `cmg_oasis_dev_improvado_user`
-- **Prod**: `sftp-cmgoasis.gene.com` user `cmg_oasis_prod_improvado_user`
-- SSH key: `~/.ssh/genentech_cmg_oasis_id_rsa` (manage in vault)
-
-## Discovery API (cross-check source)
-
-- Improvado connector: `google_dcmbp` (id 13989), profile `8578553`
-- ClickHouse table for QA cross-check: `im_300072_116.creative_advanced_300072_google_cm`
+When the same `(table, hour)` is present multiple times, **pick the most recent
+delivery** (`<dl_yyyymmdd>_<dl_hhmmss>` lexicographically max). Google
+re-delivers when late events arrive.
