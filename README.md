@@ -14,7 +14,7 @@ into a production pipeline that runs automatically every week.
 ```
        GCS (Google delivers)                   Stitch + trim         Genentech SFTP
    ┌──────────────────────────┐    ┌──────────────────────────┐   ┌──────────────┐
-   │ dcm_account848755_*.gz   │ -> │ <table>.csv  (UTC week)  │ ->│ dev → prod   │
+   │ dcm_account848755_*.gz   │ -> │ <table>.csv  (UTC week)  │ ->│ SFTP dev   │
    │ hourly + daily files     │    │ + batch_id column        │   │              │
    └──────────────────────────┘    └──────────────────────────┘   └──────────────┘
                                               │
@@ -115,8 +115,8 @@ billable normalization before declaring a match.
 
 ## Live QA report (last manual run)
 
-- **GitHub preview**: [`qa_report.html`](https://htmlpreview.github.io/?https://github.com/mustapha-analytics-pro/Genentech/blob/main/qa_report.html)
-- **Production**: `https://report.improvado.io/ai-dashboards/api/file?path=clients%2Fim_300072_116___Genentech%2Fdashboards%2FGenentech_DCM_Weekly_QA_3way_Improvado_vs_SFTP_vs_DiscoveryAPI_20260422_to_20260428.html`
+
+- **QA Report Weekly DCM (22- 28 April 2026) **: `https://report.improvado.io/ai-dashboards/api/file?path=clients%2Fim_300072_116___Genentech%2Fdashboards%2FGenentech_DCM_Weekly_QA_3way_Improvado_vs_SFTP_vs_DiscoveryAPI_20260422_to_20260428.html`
 
 ---
 
