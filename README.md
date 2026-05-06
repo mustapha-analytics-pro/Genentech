@@ -53,10 +53,9 @@ Genentech/
 | 2 | **Stitch** hourly/daily files into one CSV per table, append `batch_id` column | `stitch_weekly.py` | One CSV per table, header from first file only |
 | 3 | **Trim fact tables** to strict UTC week using `event_time_us` | `merge_weekly.py` | Disk-tight strategy for multi-GB tables |
 | 4 | **QA** — row counts, schema check, cross-check fact totals vs Discovery API | `qa_weekly.py` | Aborts the pipeline if any check exceeds 1% tolerance |
-| 5 | **Upload** to Genentech DEV SFTP first | `sftp_upload_weekly.py --env dev` | Idempotent; resumes partial uploads |
-| 6 | (Manual gate) **Upload** to Genentech PROD SFTP after dev validation | `sftp_upload_weekly.py --env prod` | Remove gate after a few clean weeks |
-| 7 | **Publish QA HTML** to `tekliner/ai-dashboards/clients/im_300072_116___Genentech/dashboards/` | (CI step) | Live URL: `report.improvado.io/ai-dashboards/api/file?path=...` |
-| 8 | **Notify** PS team via Jira comment (REST API, `jsdPublic: false`) | (CI step) | Include QA verdict + report URL |
+| 5 | **Upload** to Genentech DEV SFTP first before prod | `sftp_upload_weekly.py --env dev` | Idempotent; resumes partial uploads |
+| 6 | **Publish QA HTML** to `tekliner/ai-dashboards/clients/im_300072_116___Genentech/dashboards/` | (CI step) | Live URL: `report.improvado.io/ai-dashboards/api/file?path=...` |
+| 7 | **Notify** PS team via Jira comment (REST API, `jsdPublic: false`) | (CI step) | Include QA verdict + report URL |
 
 ---
 
